@@ -10,7 +10,7 @@ function call($controller, $action) {
 }
 
 $controllers = array(
-  'users' => ['index', 'show', 'create', 'store', 'edit', 'update', 'delete', 'error']
+  'users' => ['index', 'create', 'add', 'edit', 'update', 'delete', 'error']
 );
 
 if (array_key_exists($controller, $controllers) && in_array($action, $controllers[$controller])) {

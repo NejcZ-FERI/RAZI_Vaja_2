@@ -36,7 +36,7 @@ class User {
 
         return null;
     }
-	public static function getUsers() {
+	public static function getAll() {
 		$db = Db::getInstance();
 		$query = "SELECT * FROM users;";
 		$res = $db->query($query);
@@ -51,5 +51,104 @@ class User {
 		}
 
 		return null;
+	}
+	public static function add($username, $password, $repeatPassword, $email, $name, $surname, $address, $zipcode, $phone_number) {
+		if ($password != $repeatPassword) {
+			return false;
+		}
+
+		$db = Db::getInstance();
+		$username = mysqli_real_escape_string($db, $username);
+		$query = "SELECT * FROM users WHERE username='$username'";
+		$res = $db->query($query);
+
+		if (mysqli_num_rows($res) > 0) {
+			return false;
+		}
+
+		$email = mysqli_real_escape_string($db, $email);
+		$query = "SELECT * FROM users WHERE email='$email'";
+		$res = $db->query($query);
+
+		if (mysqli_num_rows($res) > 0) {
+			return false;
+		}
+
+		$name = mysqli_real_escape_string($db, $name);
+		$surname = mysqli_real_escape_string($db, $surname);
+		$address = mysqli_real_escape_string($db, $address);
+		$zipcode = mysqli_real_escape_string($db, $zipcode);
+		$phone_number = mysqli_real_escape_string($db, $phone_number);
+		$pass = sha1($password);
+		$query = "INSERT INTO users (username, password, email, name, surname, address, zipcode, phone_number)
+                	VALUES ('$username', '$pass', '$email', '$name', '$surname', '$address', '$zipcode', '$phone_number');";
+
+		if ($db->query($query)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function update($username, $password, $repeatPassword, $email, $name, $surname, $address, $zipcode, $phone_number) {
+		if ($password != $repeatPassword) {
+			return false;
+		}
+
+		$db = Db::getInstance();
+		$id = mysqli_real_escape_string($db, $this->id);
+		$username = mysqli_real_escape_string($db, $username);
+
+		if ($username != $this->username) {
+			$query = "SELECT * FROM users WHERE username='$username'";
+			$res = $db->query($query);
+
+			if (mysqli_num_rows($res) > 0) {
+				return false;
+			}
+		}
+
+		$email = mysqli_real_escape_string($db, $email);
+
+		if ($email != $this->email) {
+			$query = "SELECT * FROM users WHERE email='$email'";
+			$res = $db->query($query);
+
+			if (mysqli_num_rows($res) > 0) {
+				return false;
+			}
+		}
+
+		$name = mysqli_real_escape_string($db, $name);
+		$surname = mysqli_real_escape_string($db, $surname);
+		$address = mysqli_real_escape_string($db, $address);
+		$zipcode = mysqli_real_escape_string($db, $zipcode);
+		$phone_number = mysqli_real_escape_string($db, $phone_number);
+
+		if (empty($password)) {
+			$pass = $this->password;
+		} else {
+			$pass = sha1($password);
+		}
+
+		$query = "UPDATE users SET username = '$username', password = '$pass', email = '$email', name = '$name', surname = '$surname', address = '$address', zipcode = '$zipcode', phone_number = '$phone_number' WHERE id = '$id';";
+
+		if ($db->query($query)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function delete() {
+		$db = Db::getInstance();
+		$id = mysqli_real_escape_string($db, $this->id);
+		$query = "";
+
+		if ($db->query($query)) {
+			return true;
+		}
+
+		return false;
 	}
 }

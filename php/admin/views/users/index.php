@@ -1,5 +1,5 @@
 <div>
-    <h3>Seznam vseh oglasov</h3>
+    <h3>Seznam vseh uporabnikov</h3>
     <a href="?controller=users&action=create"><button>Dodaj</button></a>
     <table>
         <thead>
@@ -22,8 +22,8 @@
                 <td><?php echo ($user->admin == 1) ? 'true' : 'false'; ?></td>
                 <td>
                 <?php if ($user->admin != 1) { ?>
-                    <a href='?controller=ads&action=edit&id=<?php echo $user->id; ?>'><button>Uredi</button></a>
-                    <a href='?controller=ads&action=delete&id=<?php echo $user->id; ?>'><button>Izbriši</button></a>
+                    <a href='?controller=users&action=edit&id=<?php echo $user->id; ?>'><button>Uredi</button></a>
+                    <a href='?controller=users&action=delete&id=<?php echo $user->id; ?>'><button>Izbriši</button></a>
                 <?php } ?>
                 </td>
             </tr>

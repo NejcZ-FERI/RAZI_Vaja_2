@@ -1,63 +1,47 @@
 <?php
 class users_controller {
     public function index() {
-        $users = User::getUsers();
+        $users = User::getAll();
         require_once('views/users/index.php');
     }
-    public function show() {
-        if (!isset($_GET['id'])) {
-            return call('users', 'error');
-        }
-        $ad = Ad::find($_GET['id']);
-        require_once('views/ads/show.php');
-    }
     public function create() {
-        // Izpišemo pogled z obrazcem za vstavljanje oglasa
-        require_once('views/ads/create.php');
+        require_once('views/users/create.php');
     }
-    public function store() {
-        // Obdelamo podatke iz obrazca (views/ads/create.php), akcija pričakuje da so podatki v $_POST
-        // Tukaj bi morali podatke še validirati, preden jih dodamo v bazo
+    public function add() {
+		if (!User::add($_POST["username"], $_POST["password"], $_POST["repeat_password"], $_POST["email"], $_POST["name"], $_POST["surname"], $_POST['address'], $_POST['zipcode'], $_POST['phone_number'])) {
+			return call('users', 'error');
+		}
 
-        // Pokličemo metodo za ustvarjanje novega oglasa
-        $ad = Ad::insert($_POST["title"], $_POST["description"], $_FILES["image"]);
-
-        //ko je oglas dodan, imamo v $ad podatke o tem novem oglasu
-        //uporabniku lahko pokažemo pogled, ki ga bo obvestil o uspešnosti oddaje oglasa
-        require_once('views/ads/createSuccess.php');
+        require_once('views/users/createSuccess.php');
     }
     public function edit() {
-        // Ob klicu akcije se v URL poda GET parameter z ID-jem oglasa, ki ga urejamo
-        // Od modela pridobimo podatke o oglasu, da lahko predizpolnimo vnosna polja v obrazcu
         if (!isset($_GET['id'])) {
             return call('users', 'error');
         }
-        $ad = Ad::find($_GET['id']);
-        require_once('views/ads/edit.php');
+
+        $user = User::find($_GET['id']);
+        require_once('views/users/edit.php');
     }
     public function update() {
-        // Obdelamo podatke iz obrazca (views/ads/edit.php), ki pridejo v $_POST.
-        // Pričakujemo, da je v $_POST podan tudi ID oglasa, ki ga posodabljamo.
         if (!isset($_POST['id'])) {
             return call('users', 'error');
         }
-        // Naložimo oglas
-        $ad = Ad::find($_POST['id']);
-        // Pokličemo metodo, ki posodobi obstoječi oglas v bazi
-        $ad = $ad->update($_POST["title"], $_POST["description"], $_FILES["image"]);
-        // Izpišemo pogled s sporočilom o uspehu
-        require_once('views/ads/editSuccess.php');
+
+        $user = User::find($_POST['id']);
+
+		if (!$user->update($_POST["username"], $_POST["password"], $_POST["repeat_password"], $_POST["email"], $_POST["name"], $_POST["surname"], $_POST['address'], $_POST['zipcode'], $_POST['phone_number'])) {
+			return call('users', 'error');
+		}
+
+        require_once('views/users/editSuccess.php');
     }
     public function delete() {
-        // Obdelamo zahtevo za brisanje oglasa. Akcija pričakuje, da je v URL-ju podan ID oglasa.
         if (!isset($_GET['id'])) {
             return call('users', 'error');
         }
-        // Poiščemo oglas
+
         $ad = Ad::find($_GET['id']);
-        // Kličemo metodo za izbris oglasa iz baze.
-        $ad->delete();
-        // Izpišemo sporočilo o uspehu
+
         require_once('views/ads/deleteSuccess.php');
     }
 	public function error() {
