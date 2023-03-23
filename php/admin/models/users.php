@@ -148,12 +148,12 @@ class User {
 		$query = "";
 
 		while ($obj = $res->fetch_object()) {
-			$query .= "DELETE FROM ads WHERE id = '$obj->id';
-					DELETE FROM ads_categories WHERE ad_id = '$obj->id';
-					DELETE FROM images WHERE ad_id = '$obj->id';";
+			$query .= "DELETE FROM ads_categories WHERE ad_id = '$obj->id';
+						DELETE FROM images WHERE ad_id = '$obj->id';";
 		}
 
-		$query .= "DELETE FROM users WHERE id = '$id';";
+		$query .= "DELETE FROM ads WHERE user_id = '$id';
+					DELETE FROM users WHERE id = '$id';";
 
 		if ($db->multi_query($query)) {
 			return true;
