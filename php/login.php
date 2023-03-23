@@ -9,7 +9,7 @@ function validate_login($username, $password) {
 	$res = $conn->query($query);
 
     if ($user_obj = $res->fetch_object()) {
-		return $user_obj->id;
+		return $user_obj;
 	}
 	return -1;
 }
@@ -17,10 +17,14 @@ function validate_login($username, $password) {
 $error="";
 
 if (isset($_POST["submit"])) {
-	//Preveri prijavne podatke
-	if (($user_id = validate_login($_POST["username"], $_POST["password"])) >= 0) {
-		//Zapomni si prijavljenega uporabnika v seji in preusmeri na index.php
+	if (($user = validate_login($_POST["username"], $_POST["password"])) >= 0) {
+		$user_id = $user->id;
 		$_SESSION["USER_ID"] = $user_id;
+
+        if ($user->admin == 1) {
+			$_SESSION["ADMIN"] = true;
+        }
+
 		header("Location: index.php");
 		die();
 	} else {

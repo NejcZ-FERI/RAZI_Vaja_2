@@ -24,7 +24,7 @@ require_once "controllers/ads_controller.php"; //vključimo API controller
 
 session_start();
 
-$ads_controller = new ads_controller;
+$ads_controller = new users_controller;
 
 //nastavimo glave odgovora tako, da brskalniku sporočimo, da mu vračamo json
 header('Content-Type: application/json');

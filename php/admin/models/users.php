@@ -9,30 +9,27 @@
     user_id zamenja z instanco objekta User z vsemi podatki o uporabniku.
 */
 
-class User
-{
+class User {
     public $id;
     public $username;
     public $password;
 
-    // Konstruktor
-    public function __construct($id, $username, $password)
-    {
+    public function __construct($id, $username, $password) {
         $this->id = $id;
         $this->username = $username;
         $this->password = $password;
     }
 
-    // Metoda, ki vrne uporabnika z določenim ID-jem iz baze
-    public static function find($id)
-    {
+    public static function find($id) {
         $db = Db::getInstance();
         $id = mysqli_real_escape_string($db, $id);
         $query = "SELECT * FROM users WHERE id = '$id';";
         $res = $db->query($query);
+
         if ($user = $res->fetch_object()) {
             return new User($user->id, $user->username, $user->password);
         }
+
         return null;
     }
 }
