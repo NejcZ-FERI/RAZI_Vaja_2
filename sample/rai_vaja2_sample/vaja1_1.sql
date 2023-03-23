@@ -10,11 +10,11 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Zbirka podatkov: `vaja1`
+-- Zbirka podatkov: `vaja1_1`
 --
-DROP DATABASE IF EXISTS `vaja1`;
-CREATE DATABASE IF NOT EXISTS `vaja1` DEFAULT CHARACTER SET utf8 COLLATE utf8_slovenian_ci;
-USE `vaja1`;
+DROP DATABASE IF EXISTS `vaja1_1`;
+CREATE DATABASE IF NOT EXISTS `vaja1_1` DEFAULT CHARACTER SET utf8 COLLATE utf8_slovenian_ci;
+USE `vaja1_1`;
 
 -- --------------------------------------------------------
 

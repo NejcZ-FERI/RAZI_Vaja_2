@@ -10,11 +10,11 @@ function call($controller, $action) {
 }
 
 $controllers = array(
-  'users' => ['index', 'show', 'create', 'store', 'edit', 'update', 'delete']
+  'users' => ['index', 'show', 'create', 'store', 'edit', 'update', 'delete', 'error']
 );
 
 if (array_key_exists($controller, $controllers) && in_array($action, $controllers[$controller])) {
   	call($controller, $action);
 } else {
-  	echo "Prišlo je do napake!";
+	call('users', 'error');
 }

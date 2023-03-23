@@ -28,7 +28,6 @@
             </ul>
         </div>
     </nav>
-    <br/>
 
     <?php require_once('routes.php'); ?> 
 

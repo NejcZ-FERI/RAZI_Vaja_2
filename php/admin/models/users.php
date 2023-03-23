@@ -1,23 +1,27 @@
 <?php
-
-// Model za uporabnika
-/*
-    Model z uporabniki.
-    Čeprav nimamo users_controller-ja, ta model potrebujemo pri oglasih, 
-    saj oglas vsebuje podatke o uporabniku, ki je oglas objavil.
-    Razred implementira metodo find, ki jo uporablja Ads model zato, da 
-    user_id zamenja z instanco objekta User z vsemi podatki o uporabniku.
-*/
-
 class User {
     public $id;
     public $username;
     public $password;
+	public $email;
+	public $name;
+	public $surname;
+	public $address;
+	public $zipcode;
+	public $phone_number;
+	public $admin;
 
-    public function __construct($id, $username, $password) {
+    public function __construct($id, $username, $password, $email, $name, $surname, $address, $zipcode, $phone_number, $admin) {
         $this->id = $id;
         $this->username = $username;
         $this->password = $password;
+		$this->email = $email;
+		$this->name = $name;
+		$this->surname = $surname;
+		$this->address = $address;
+		$this->zipcode = $zipcode;
+		$this->phone_number = $phone_number;
+		$this->admin = $admin;
     }
 
     public static function find($id) {
@@ -27,9 +31,25 @@ class User {
         $res = $db->query($query);
 
         if ($user = $res->fetch_object()) {
-            return new User($user->id, $user->username, $user->password);
+            return new User($user->id, $user->username, $user->password, $user->email, $user->name, $user->surname, $user->address, $user->zipcode, $user->phone_number, $user->admin);
         }
 
         return null;
     }
+	public static function getUsers() {
+		$db = Db::getInstance();
+		$query = "SELECT * FROM users;";
+		$res = $db->query($query);
+		$users = array();
+
+		while ($user = $res->fetch_object()) {
+			$users[] = new User($user->id, $user->username, $user->password, $user->email, $user->name, $user->surname, $user->address, $user->zipcode, $user->phone_number, $user->admin);
+		}
+
+		if (!empty($users)) {
+			return $users;
+		}
+
+		return null;
+	}
 }

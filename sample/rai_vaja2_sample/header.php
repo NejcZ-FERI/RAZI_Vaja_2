@@ -8,7 +8,7 @@
 	$_SESSION['LAST_ACTIVITY'] = time();
 	
 	//Poveži se z bazo
-	$conn = new mysqli('localhost', 'root', '', 'vaja1');
+	$conn = new mysqli('localhost', 'root', '', 'vaja1_1');
 	//Nastavi kodiranje znakov, ki se uporablja pri komunikaciji z bazo
 	$conn->set_charset("UTF8");
 ?>
