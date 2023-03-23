@@ -23,15 +23,16 @@ USE `vaja1`;
 --
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
-     `id` INT(11) NOT NULL AUTO_INCREMENT,
-     `username` TEXT COLLATE utf8_slovenian_ci NOT NULL,
-     `password` TEXT COLLATE utf8_slovenian_ci NOT NULL,
-     `email` TEXT COLLATE utf8_slovenian_ci NOT NULL,
-     `name` TEXT COLLATE utf8_slovenian_ci NOT NULL,
-     `surname` TEXT COLLATE utf8_slovenian_ci NOT NULL,
-     `address` TEXT COLLATE utf8_slovenian_ci,
-     `zipcode` TEXT COLLATE utf8_slovenian_ci,
-     `phone_number` TEXT COLLATE utf8_slovenian_ci,
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `username` TEXT COLLATE utf8_slovenian_ci NOT NULL,
+    `password` TEXT COLLATE utf8_slovenian_ci NOT NULL,
+    `email` TEXT COLLATE utf8_slovenian_ci NOT NULL,
+    `name` TEXT COLLATE utf8_slovenian_ci NOT NULL,
+    `surname` TEXT COLLATE utf8_slovenian_ci NOT NULL,
+    `address` TEXT COLLATE utf8_slovenian_ci,
+    `zipcode` TEXT COLLATE utf8_slovenian_ci,
+    `phone_number` TEXT COLLATE utf8_slovenian_ci,
+    `admin` TINYINT(1) NOT NULL DEFAULT '0',
      PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_slovenian_ci;
 
