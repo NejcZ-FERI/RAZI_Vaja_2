@@ -40,9 +40,13 @@ class users_controller {
             return call('users', 'error');
         }
 
-        $ad = Ad::find($_GET['id']);
+        $user = User::find($_GET['id']);
 
-        require_once('views/ads/deleteSuccess.php');
+		if (!$user->delete()) {
+			return call('users', 'error');
+		}
+
+        require_once('views/users/deleteSuccess.php');
     }
 	public function error() {
 		require_once('views/users/error.php');

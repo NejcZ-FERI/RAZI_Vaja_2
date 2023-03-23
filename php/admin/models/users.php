@@ -143,9 +143,19 @@ class User {
 	public function delete() {
 		$db = Db::getInstance();
 		$id = mysqli_real_escape_string($db, $this->id);
+		$query = "SELECT * FROM ads WHERE ads.user_id = '$id';";
+		$res = $db->query($query);
 		$query = "";
 
-		if ($db->query($query)) {
+		while ($obj = $res->fetch_object()) {
+			$query .= "DELETE FROM ads WHERE id = '$obj->id';
+					DELETE FROM ads_categories WHERE ad_id = '$obj->id';
+					DELETE FROM images WHERE ad_id = '$obj->id';";
+		}
+
+		$query .= "DELETE FROM users WHERE id = '$id';";
+
+		if ($db->multi_query($query)) {
 			return true;
 		}
 

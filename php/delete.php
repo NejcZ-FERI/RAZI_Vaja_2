@@ -15,7 +15,7 @@ $id = $_GET["id"];
 $my_id = $_SESSION["USER_ID"];
 global $conn;
 $id = mysqli_real_escape_string($conn, $id);
-$query = "SELECT ads.*, users.username FROM ads LEFT JOIN users ON users.id = ads.user_id WHERE ads.id = '$id';";
+$query = "SELECT * FROM ads WHERE ads.id = '$id';";
 $res = $conn->query($query);
 
 if ($obj = $res->fetch_object()) {
