@@ -9,7 +9,7 @@
                     <th>Priimek</th>
                     <th>Email</th>
                     <th>Admin</th>
-                    <th></th>
+                    <th>Urejanje</th>
                 </tr>
             </thead>
             <tbody>

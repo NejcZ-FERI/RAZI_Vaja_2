@@ -23,6 +23,8 @@ if (isset($_POST["submit"])) {
 
         if ($user->admin == 1) {
 			$_SESSION["ADMIN"] = true;
+        } else {
+            $_SESSION["ADMIN"] = false;
         }
 
 		header("Location: index.php");
