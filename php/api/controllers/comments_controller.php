@@ -12,7 +12,7 @@ class comments_controller {
     public function delete($ad_id, $id) {
 		$comment = Comment::find($id);
 
-		if ($comment->ad->id == $ad_id && ($comment->ad->user_id == $_SESSION["USER_ID"] || (isset($_SESSION["ADMIN"]) && $_SESSION["ADMIN"]))) {
+		if ($comment->ad->id == $ad_id && ($comment->ad->user->id == $_SESSION["USER_ID"] || (isset($_SESSION["ADMIN"]) && $_SESSION["ADMIN"]))) {
 			$comment = $comment->delete();
 			echo json_encode($comment);
 		} else {
