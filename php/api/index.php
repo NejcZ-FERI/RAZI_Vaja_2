@@ -51,7 +51,12 @@ switch($method){
 		$comments_controller->index($request[1]);
         break;
     case "POST":
-		$comments_controller->store();
+		if(!isset($_SESSION["USER_ID"])) {
+			echo json_encode((object)["status"=>"500", "message"=>"Invalid parameters"]);
+			die();
+		}
+
+		$comments_controller->add();
         break;
     //case "PUT":
     case "DELETE":

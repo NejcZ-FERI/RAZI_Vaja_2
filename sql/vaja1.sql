@@ -104,6 +104,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
     `ad_id` INT(11) NOT NULL,
     `user_id` INT(11) NOT NULL,
     `text` TEXT COLLATE utf8_slovenian_ci NOT NULL,
+    `published` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_slovenian_ci;
 COMMIT;

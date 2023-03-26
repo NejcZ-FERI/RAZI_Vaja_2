@@ -1,28 +1,30 @@
 <?php
 
 require_once 'users.php';
+require_once 'ads.php';
 
 class Comment {
 	public $id;
-	public $ad_id;
-	public $user_id;
+	public $ad;
+	public $user;
 	public $text;
+	public $published;
 
-	public function __construct($id, $ad_id, $user_id, $text) {
+	public function __construct($id, $ad_id, $user_id, $text, $published) {
 		$this->id = $id;
-		$this->ad_id = $ad_id;
+		$this->ad = Ad::find($ad_id);
 		$this->user = User::find($user_id);
 		$this->text = $text;
+		$this->published = $published;
 	}
 	public static function find($id) {
 		$db = Db::getInstance();
 		$id = mysqli_real_escape_string($db, $id);
 		$query = "SELECT * FROM comments WHERE id = '$id';";
 		$res = $db->query($query);
-		$comments = array();
 
 		if ($comment = $res->fetch_object()) {
-			return new Comment($comment->id, $comment->ad_id, $comment->user_id, $comment->text);
+			return new Comment($comment->id, $comment->ad_id, $comment->user_id, $comment->text, $comment->published);
 		}
 
 		return null;
@@ -30,30 +32,35 @@ class Comment {
 	public static function getAll($ad_id) {
 		$db = Db::getInstance();
 		$ad_id = mysqli_real_escape_string($db, $ad_id);
-		$query = "SELECT * FROM comments WHERE ad_id = '$ad_id';";
+		$query = "SELECT * FROM comments WHERE ad_id = '$ad_id' ORDER BY id ASC;";
 		$res = $db->query($query);
 		$comments = array();
 
 		while ($comment = $res->fetch_object()) {
-			$comments[] = new Comment($comment->id, $comment->ad_id, $comment->user_id, $comment->text);
+			$comments[] = new Comment($comment->id, $comment->ad_id, $comment->user_id, $comment->text, $comment->published);
 		}
 
 		return $comments;
 	}
 	public static function add($ad_id, $text) {
+		if (!isset($_SESSION["USER_ID"])) {
+			return null;
+		}
+
 		$db = Db::getInstance();
 		$ad_id = mysqli_real_escape_string($db, $ad_id);
 		$user_id = mysqli_real_escape_string($db, $_SESSION["USER_ID"]);
 		$text = mysqli_real_escape_string($db, $text);
 
-		$query = "INSERT INTO coomments (ad_id, user_id, text)
-                	VALUES ('$ad_id', '$user_id', '$text');";
+		$query = "INSERT INTO comments (ad_id, user_id, text, published)
+                	VALUES ('$ad_id', '$user_id', '$text', NOW());";
 
 		if ($db->query($query)) {
-			return true;
+			$id = mysqli_insert_id($db);
+			return Comment::find($id);
+		} else {
+			return null;
 		}
-
-		return false;
 	}
 	public function delete() {
 		$db = Db::getInstance();
