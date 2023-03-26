@@ -79,8 +79,6 @@ CREATE TABLE IF NOT EXISTS `ads_categories` (
     `category_id` INT(11) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_slovenian_ci;
-COMMIT;
-
 
 -- --------------------------------------------------------
 
@@ -92,6 +90,20 @@ CREATE TABLE IF NOT EXISTS `images` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `ad_id` INT(11) NOT NULL,
     `image` LONGBLOB NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_slovenian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabele `comments`
+--
+DROP TABLE IF EXISTS `comments`;
+CREATE TABLE IF NOT EXISTS `comments` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `ad_id` INT(11) NOT NULL,
+    `user_id` INT(11) NOT NULL,
+    `text` TEXT COLLATE utf8_slovenian_ci NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_slovenian_ci;
 COMMIT;
