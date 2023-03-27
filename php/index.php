@@ -27,12 +27,6 @@ $ads = get_ads();
     <script>
         $(document).ready(async function() {
             await loadCommentsAll();
-
-            if ($("#comments_section_all").is(":empty")) {
-                $("#comments_all").hide();
-            } else {
-                $("#comments_all").show();
-            }
         });
 
         async function loadCommentsAll() {
@@ -40,16 +34,22 @@ $ads = get_ads();
         }
 
         function renderCommentsAll(comments) {
-            comments.forEach(function(comment) {
-                let commentsHtml = "<div class='card my-2' id='comment-" + comment.id + "'>";
-                commentsHtml += "<div style='background-color: #F5FAFA' class='card-body'>";
-                commentsHtml += "<h5 class='card-title'>" + comment.user.username + "</h5>";
-                commentsHtml += "<p class='card-text'>" + comment.text + "</p>";
-                commentsHtml += "<p>Čas objave: " + comment.published + "</p>";
-                commentsHtml += "<a href='ad.php?id=" + comment.ad.id + "'><button class='btn btn-primary'>Obišči oglas</button></a>";
-                commentsHtml += "</div></div>";
+            $("#comments_all").hide();
 
-                $("#comments_section_all").append(commentsHtml);
+            comments.forEach(function(comment) {
+                $.get('http://ip-api.com/json/' + comment.user_ip + '?fields=1', function(ip) {
+                    let commentsHtml = "<div class='card my-2' id='comment-" + comment.id + "'>";
+                    commentsHtml += "<div style='background-color: #F5FAFA' class='card-body'>";
+                    commentsHtml += "<h5 class='card-title'>" + comment.user.username + "</h5>";
+                    commentsHtml += "<p class='card-text'>" + ip.country + "</p>";
+                    commentsHtml += "<p class='card-text'>" + comment.text + "</p>";
+                    commentsHtml += "<p class='card-text'>Čas objave: " + comment.published + "</p>";
+                    commentsHtml += "<a href='ad.php?id=" + comment.ad.id + "'><button class='btn btn-primary'>Obišči oglas</button></a>";
+                    commentsHtml += "</div></div>";
+
+                    $("#comments_section_all").append(commentsHtml);
+                    $("#comments_all").show();
+                });
             });
         }
     </script>

@@ -7,13 +7,15 @@ class Comment {
 	public $id;
 	public $ad;
 	public $user;
+    public $user_ip;
 	public $text;
 	public $published;
 
-	public function __construct($id, $ad_id, $user_id, $text, $published) {
+	public function __construct($id, $ad_id, $user_id, $user_ip, $text, $published) {
 		$this->id = $id;
 		$this->ad = Ad::find($ad_id);
 		$this->user = User::find($user_id);
+        $this->user_ip = $user_ip;
 		$this->text = $text;
 		$this->published = $published;
 	}
@@ -24,7 +26,7 @@ class Comment {
 		$res = $db->query($query);
 
 		if ($comment = $res->fetch_object()) {
-			return new Comment($comment->id, $comment->ad_id, $comment->user_id, $comment->text, $comment->published);
+			return new Comment($comment->id, $comment->ad_id, $comment->user_id, $comment->user_ip, $comment->text, $comment->published);
 		}
 
 		return null;
@@ -37,7 +39,7 @@ class Comment {
 		$comments = array();
 
 		while ($comment = $res->fetch_object()) {
-			$comments[] = new Comment($comment->id, $comment->ad_id, $comment->user_id, $comment->text, $comment->published);
+			$comments[] = new Comment($comment->id, $comment->ad_id, $comment->user_id, $comment->user_ip, $comment->text, $comment->published);
 		}
 
 		return $comments;
@@ -49,12 +51,12 @@ class Comment {
         $comments = array();
 
         while ($comment = $res->fetch_object()) {
-            $comments[] = new Comment($comment->id, $comment->ad_id, $comment->user_id, $comment->text, $comment->published);
+            $comments[] = new Comment($comment->id, $comment->ad_id, $comment->user_id, $comment->user_ip, $comment->text, $comment->published);
         }
 
         return $comments;
     }
-	public static function add($ad_id, $text) {
+	public static function add($ad_id, $user_ip, $text) {
 		if (!isset($_SESSION["USER_ID"])) {
 			return null;
 		}
@@ -62,10 +64,11 @@ class Comment {
 		$db = Db::getInstance();
 		$ad_id = mysqli_real_escape_string($db, $ad_id);
 		$user_id = mysqli_real_escape_string($db, $_SESSION["USER_ID"]);
+        $user_ip = mysqli_real_escape_string($db, $user_ip);
 		$text = mysqli_real_escape_string($db, $text);
 
-		$query = "INSERT INTO comments (ad_id, user_id, text, published)
-                	VALUES ('$ad_id', '$user_id', '$text', NOW());";
+		$query = "INSERT INTO comments (ad_id, user_id, user_ip, text, published)
+                	VALUES ('$ad_id', '$user_id', '$user_ip', '$text', NOW());";
 
 		if ($db->query($query)) {
 			$id = mysqli_insert_id($db);

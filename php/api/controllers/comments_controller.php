@@ -10,7 +10,7 @@ class comments_controller {
         echo json_encode($comments);
     }
     public function add() {
-		$comment = Comment::add($_POST["ad_id"], $_POST["text"]);
+		$comment = Comment::add($_POST["ad_id"], $_POST["user_ip"], $_POST["text"]);
 		echo json_encode($comment);
     }
     public function delete($ad_id, $id) {

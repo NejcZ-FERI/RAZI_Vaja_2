@@ -67,19 +67,22 @@ if (!isset($_COOKIE["VIEWS"])) {
 
         function renderComments(comments) {
             comments.forEach(function(comment) {
-                let commentsHtml = "<div class='card my-2' id='comment-" + comment.id + "'>";
-                commentsHtml += "<div class='card-body'>";
-                commentsHtml += "<h5 class='card-title'>" + comment.user.username + "</h5>";
-                commentsHtml += "<p class='card-text'>" + comment.text + "</p>";
-                commentsHtml += "<p>Čas objave: " + comment.published + "</p>";
+                $.get('http://ip-api.com/json/' + comment.user_ip + '?fields=1', function(ip) {
+                    let commentsHtml = "<div class='card my-2' id='comment-" + comment.id + "'>";
+                    commentsHtml += "<div class='card-body'>";
+                    commentsHtml += "<h5 class='card-title'>" + comment.user.username + "</h5>";
+                    commentsHtml += "<p class='card-text'>" + ip.country + "</p>";
+                    commentsHtml += "<p class='card-text'>" + comment.text + "</p>";
+                    commentsHtml += "<p class='card-text'>Čas objave: " + comment.published + "</p>";
 
-                <?php if (isset($_SESSION['USER_ID']) && (($ad->user_id == $_SESSION['USER_ID']) || (isset($_SESSION["ADMIN"]) && $_SESSION["ADMIN"]))) { ?>
-                commentsHtml += "<button class='btn btn-danger delete_comment_btn' data-comment-id='" + comment.id + "'>Delete</button>";
-                <?php } ?>
+                    <?php if (isset($_SESSION['USER_ID']) && (($ad->user_id == $_SESSION['USER_ID']) || (isset($_SESSION["ADMIN"]) && $_SESSION["ADMIN"]))) { ?>
+                    commentsHtml += "<button class='btn btn-danger delete_comment_btn' data-comment-id='" + comment.id + "'>Delete</button>";
+                    <?php } ?>
 
-                commentsHtml += "</div></div>";
+                    commentsHtml += "</div></div>";
 
-                $("#comments_section").append(commentsHtml);
+                    $("#comments_section").append(commentsHtml);
+                });
             });
         }
 
@@ -87,28 +90,33 @@ if (!isset($_COOKIE["VIEWS"])) {
             if ($("#create_comment_text").val().trim() === "") {
                 return false;
             } else {
-                let data = {
-                    ad_id: <?php echo $ad->id; ?>,
-                    text: $("#create_comment_text").val()
-                };
+                $.getJSON("http://ip-api.com/json/?callback=?", function(user_ip) {
+                    let data = {
+                        ad_id: <?php echo $ad->id; ?>,
+                        user_ip: user_ip.query,
+                        text: $("#create_comment_text").val()
+                    };
 
-                $("#create_comment_text").val("");
+                    $("#create_comment_text").val("");
 
-                $.post('/api/index.php/comments/', data, function(data) {
-                    console.log(data);
-                    let commentsHtml = "<div class='card my-2' id='comment-" + data.id + "'>";
-                    commentsHtml += "<div class='card-body'>";
-                    commentsHtml += "<h5 class='card-title'>" + data.user.username + "</h5>";
-                    commentsHtml += "<p class='card-text'>" + data.text + "</p>";
-                    commentsHtml += "<p>Čas objave: " + data.published + "</p>";
+                    $.post('/api/index.php/comments/', data, function(data) {
+                        $.get('http://ip-api.com/json/' + data.user_ip + '?fields=1', function(ip) {
+                            let commentsHtml = "<div class='card my-2' id='comment-" + data.id + "'>";
+                            commentsHtml += "<div class='card-body'>";
+                            commentsHtml += "<h5 class='card-title'>" + data.user.username + "</h5>";
+                            commentsHtml += "<p class='card-text'>" + ip.country + "</p>";
+                            commentsHtml += "<p class='card-text'>" + data.text + "</p>";
+                            commentsHtml += "<p class='card-text'>Čas objave: " + data.published + "</p>";
 
-                    <?php if (isset($_SESSION['USER_ID']) && (($ad->user_id == $_SESSION['USER_ID']) || (isset($_SESSION["ADMIN"]) && $_SESSION["ADMIN"]))) { ?>
-                    commentsHtml += "<button class='btn btn-danger delete_comment_btn' data-comment-id='" + data.id + "'>Delete</button>";
-                    <?php } ?>
+                            <?php if (isset($_SESSION['USER_ID']) && (($ad->user_id == $_SESSION['USER_ID']) || (isset($_SESSION["ADMIN"]) && $_SESSION["ADMIN"]))) { ?>
+                            commentsHtml += "<button class='btn btn-danger delete_comment_btn' data-comment-id='" + data.id + "'>Delete</button>";
+                            <?php } ?>
 
-                    commentsHtml += "</div></div>";
+                            commentsHtml += "</div></div>";
 
-                    $("#comments_section").prepend(commentsHtml);
+                            $("#comments_section").prepend(commentsHtml);
+                        });
+                    });
                 });
             }
         }

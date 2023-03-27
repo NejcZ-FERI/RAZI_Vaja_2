@@ -12,7 +12,7 @@ SET time_zone = "+00:00";
 --
 -- Zbirka podatkov: `vaja1`
 --
-DROP DATABASE IF EXISTS `vaja1`;
+-- DROP DATABASE IF EXISTS `vaja1`;
 CREATE DATABASE IF NOT EXISTS `vaja1` DEFAULT CHARACTER SET utf8 COLLATE UTF8_SLOVENIAN_CI;
 USE `vaja1`;
 
@@ -21,7 +21,7 @@ USE `vaja1`;
 --
 -- Struktura tabele `users`
 --
-DROP TABLE IF EXISTS `users`;
+-- DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `username` TEXT COLLATE utf8_slovenian_ci NOT NULL,
@@ -41,22 +41,22 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 -- Struktura tabele `categorys`
 --
-DROP TABLE IF EXISTS `categories`;
+-- DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `title` TEXT COLLATE utf8_slovenian_ci NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_slovenian_ci;
 
-INSERT INTO categories (title)
-VALUES ('Hrana'), ('Dom'), ('Avto-moto'), ('Telefonija'), ('Šport'), ('Za otroke');
+-- INSERT INTO categories (title)
+-- VALUES ('Hrana'), ('Dom'), ('Avto-moto'), ('Telefonija'), ('Šport'), ('Za otroke');
 
 -- --------------------------------------------------------
 
 --
 -- Struktura tabele `ads`
 --
-DROP TABLE IF EXISTS `ads`;
+-- DROP TABLE IF EXISTS `ads`;
 CREATE TABLE IF NOT EXISTS `ads` (
      `id` INT(11) NOT NULL AUTO_INCREMENT,
      `title` TEXT COLLATE utf8_slovenian_ci NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `ads` (
 --
 -- Struktura tabele `ads_category`
 --
-DROP TABLE IF EXISTS `ads_categories`;
+-- DROP TABLE IF EXISTS `ads_categories`;
 CREATE TABLE IF NOT EXISTS `ads_categories` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `ad_id` INT(11) NOT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `ads_categories` (
 --
 -- Struktura tabele `images`
 --
-DROP TABLE IF EXISTS `images`;
+-- DROP TABLE IF EXISTS `images`;
 CREATE TABLE IF NOT EXISTS `images` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `ad_id` INT(11) NOT NULL,
@@ -103,6 +103,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `ad_id` INT(11) NOT NULL,
     `user_id` INT(11) NOT NULL,
+    `user_ip` VARCHAR(15) NOT NULL,
     `text` TEXT COLLATE utf8_slovenian_ci NOT NULL,
     `published` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
