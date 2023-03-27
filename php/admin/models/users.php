@@ -152,7 +152,8 @@ class User {
 						DELETE FROM images WHERE ad_id = '$obj->id';";
 		}
 
-		$query .= "DELETE FROM ads WHERE user_id = '$id';
+		$query .= "DELETE FROM comments WHERE user_id = '$id';
+					DELETE FROM ads WHERE user_id = '$id';
 					DELETE FROM users WHERE id = '$id';";
 
 		if ($db->multi_query($query)) {
