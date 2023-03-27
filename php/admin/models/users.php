@@ -150,7 +150,7 @@ class User {
 		while ($obj = $res->fetch_object()) {
 			$query .= "DELETE FROM ads_categories WHERE ad_id = '$obj->id';
 						DELETE FROM images WHERE ad_id = '$obj->id';
-						DELETE FROM comments WHERE ad_id = '$obj->$id';";
+						DELETE FROM comments WHERE ad_id = '$obj->id';";
 		}
 
 		$query .= "DELETE FROM comments WHERE user_id = '$id';
