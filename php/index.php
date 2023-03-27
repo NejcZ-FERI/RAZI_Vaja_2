@@ -46,7 +46,7 @@ $ads = get_ads();
                 commentsHtml += "<h5 class='card-title'>" + comment.user.username + "</h5>";
                 commentsHtml += "<p class='card-text'>" + comment.text + "</p>";
                 commentsHtml += "<p>Čas objave: " + comment.published + "</p>";
-                commentsHtml += "<a href='ad.php?id=" + comment.ad.id + "'><button class='btn btn-primary'>Preberi več</button></a>";
+                commentsHtml += "<a href='ad.php?id=" + comment.ad.id + "'><button class='btn btn-primary'>Obišči oglas</button></a>";
                 commentsHtml += "</div></div>";
 
                 $("#comments_section_all").append(commentsHtml);
@@ -54,7 +54,7 @@ $ads = get_ads();
         }
     </script>
     <div class="container p-4 my-5 bg-white border rounded-3" id="comments_all">
-        <h5>Najnovejših 5 komentarjev:</h5>
+        <h5 class="mb-4">Najnovejših 5 komentarjev:</h5>
         <div id="comments_section_all"></div>
     </div>
 

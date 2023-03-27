@@ -43,19 +43,23 @@ if (!isset($_COOKIE["VIEWS"])) {
     <script>
         $(document).ready(async function() {
             await loadComments();
+            checkCommentsSectionEmpty();
             $("#create_comment_btn").click(createComment);
-            $(".delete_comment_btn").click(deleteClickHandler);
+            //$(".delete_comment_btn").click(deleteClickHandler);
+            $("#comments_section").on("click", ".delete_comment_btn", deleteClickHandler);
 
-            const observer = new MutationObserver((mutationsList, observer) => {
-                if ($("#comments_section").is(":empty")) {
-                    $("#comment_title").hide();
-                } else {
-                    $("#comment_title").show();
-                }
-            });
+            const observer = new MutationObserver((mutationsList, observer) => { checkCommentsSectionEmpty(); });
 
             observer.observe(document.getElementById('comments_section'), {attributes: false, childList: true, subtree: true});
         });
+
+        function checkCommentsSectionEmpty() {
+            if ($("#comments_section").is(":empty")) {
+                $("#comment_div").hide();
+            } else {
+                $("#comment_div").show();
+            }
+        }
 
         async function loadComments() {
             await $.get("/api/index.php/comments/<?php echo $id;?>", renderComments);
@@ -80,29 +84,33 @@ if (!isset($_COOKIE["VIEWS"])) {
         }
 
         function createComment() {
-            let data = {
-                ad_id: <?php echo $ad->id; ?>,
-                text: $("#create_comment_text").val()
-            };
+            if ($("#create_comment_text").val().trim() === "") {
+                return false;
+            } else {
+                let data = {
+                    ad_id: <?php echo $ad->id; ?>,
+                    text: $("#create_comment_text").val()
+                };
 
-            $("#create_comment_text").val("");
+                $("#create_comment_text").val("");
 
-            $.post('/api/index.php/comments/', data, function(data) {
-                console.log(data);
-                let commentsHtml = "<div class='card my-2' id='comment-" + data.id + "'>";
-                commentsHtml += "<div class='card-body'>";
-                commentsHtml += "<h5 class='card-title'>" + data.user.username + "</h5>";
-                commentsHtml += "<p class='card-text'>" + data.text + "</p>";
-                commentsHtml += "<p>Čas objave: " + data.published + "</p>";
+                $.post('/api/index.php/comments/', data, function(data) {
+                    console.log(data);
+                    let commentsHtml = "<div class='card my-2' id='comment-" + data.id + "'>";
+                    commentsHtml += "<div class='card-body'>";
+                    commentsHtml += "<h5 class='card-title'>" + data.user.username + "</h5>";
+                    commentsHtml += "<p class='card-text'>" + data.text + "</p>";
+                    commentsHtml += "<p>Čas objave: " + data.published + "</p>";
 
-				<?php if (isset($_SESSION['USER_ID']) && (($ad->user_id == $_SESSION['USER_ID']) || (isset($_SESSION["ADMIN"]) && $_SESSION["ADMIN"]))) { ?>
-                commentsHtml += "<button class='btn btn-danger delete_comment_btn' data-comment-id='" + data.id + "'>Delete</button>";
-				<?php } ?>
+                    <?php if (isset($_SESSION['USER_ID']) && (($ad->user_id == $_SESSION['USER_ID']) || (isset($_SESSION["ADMIN"]) && $_SESSION["ADMIN"]))) { ?>
+                    commentsHtml += "<button class='btn btn-danger delete_comment_btn' data-comment-id='" + data.id + "'>Delete</button>";
+                    <?php } ?>
 
-                commentsHtml += "</div></div>";
+                    commentsHtml += "</div></div>";
 
-                $("#comments_section").prepend(commentsHtml);
-            });
+                    $("#comments_section").prepend(commentsHtml);
+                });
+            }
         }
 
         function deleteClickHandler() {
@@ -138,13 +146,20 @@ if (!isset($_COOKIE["VIEWS"])) {
         <?php if (isset($_SESSION["USER_ID"])) { if ($ad->user_id == $_SESSION["USER_ID"]) { ?>
 			<a href="edit.php?id=<?php echo $id;?>"><button class="btn btn-primary">Uredi</button></a>
             <a href="delete.php?id=<?php echo $id;?>"><button class="btn btn-primary">Izbriši</button></a>
-        <?php } } if (isset($_SESSION["USER_ID"])) { ?>
-            <br/> <br/> <label for="create_comment_text">Text</label><textarea id="create_comment_text" name="create_comment_text" rows="10" cols="50"></textarea>
-            <button id="create_comment_btn" class="btn btn-primary">Dodaj</button>
+        <?php } ?>
+            <br/> <br/> <hr/> <br/> <div class="form-group">
+                <label class="form-label" for="create_comment_text">Komentiraj</label>
+                <textarea class="form-control" id="create_comment_text" name="create_comment_text" rows="6" cols="50"></textarea>
+            </div>
+            <br/> <div class="form-group">
+                <button id="create_comment_btn" class="btn btn-primary btn-block">Dodaj</button>
+            </div>
 		<?php } ?>
-        <br/> <br/> <h5 id="comment_title">Komentarji:</h5>
-        <div id="comments_section"></div>
-	</div>
+        <div id="comment_div">
+            <br/> <hr/> <br/> <h5 class="mb-4" id="comment_title">Komentarji:</h5>
+            <div id="comments_section"></div>
+        </div>
+    </div>
 <?php
 include_once('footer.php');
 ?>

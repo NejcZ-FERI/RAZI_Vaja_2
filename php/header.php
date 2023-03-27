@@ -23,25 +23,24 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand"><b>Oglasnik</b></a>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="index.php">Domov</a></li>
-                <?php
-                if (isset($_SESSION["USER_ID"])) {
-                    ?>
-                    <li class="nav-item"><a class="nav-link" href="my_ads.php">Moji oglasi</a></li>
-                    <li class="nav-item"><a class="nav-link" href="publish.php">Objavi oglas</a></li>
-                    <?php if (isset($_SESSION["ADMIN"]) && $_SESSION["ADMIN"]) { ?>
-						<li class="nav-item"><a class="nav-link" href="admin/index.php">Administracija</a></li>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto flex-nowrap">
+                    <li class="nav-item"><a class="nav-link" href="index.php">Domov</a></li>
+                    <?php if (isset($_SESSION["USER_ID"])) { ?>
+                        <li class="nav-item"><a class="nav-link" href="my_ads.php">Moji oglasi</a></li>
+                        <li class="nav-item"><a class="nav-link" href="publish.php">Objavi oglas</a></li>
+                        <?php if (isset($_SESSION["ADMIN"]) && $_SESSION["ADMIN"]) { ?>
+                            <li class="nav-item"><a class="nav-link" href="admin/index.php">Administracija</a></li>
+                        <?php } ?>
+                        <li class="nav-item"><a class="nav-link" href="logout.php">Odjava</a></li>
+                    <?php } else { ?>
+                        <li class="nav-item"><a class="nav-link" href="login.php">Prijava</a></li>
+                        <li class="nav-item"><a class="nav-link" href="register.php">Registracija</a></li>
                     <?php } ?>
-                    <li class="nav-item"><a class="nav-link" href="logout.php">Odjava</a></li>
-                    <?php
-                } else {
-                    ?>
-                    <li class="nav-item"><a class="nav-link" href="login.php">Prijava</a></li>
-                    <li class="nav-item"><a class="nav-link" href="register.php">Registracija</a></li>
-                    <?php
-                }
-                ?>
-            </ul>
+                </ul>
+            </div>
         </div>
-	</nav>
+    </nav>
