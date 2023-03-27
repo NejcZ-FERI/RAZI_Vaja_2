@@ -32,7 +32,7 @@ class Comment {
 	public static function getAll($ad_id) {
 		$db = Db::getInstance();
 		$ad_id = mysqli_real_escape_string($db, $ad_id);
-		$query = "SELECT * FROM comments WHERE ad_id = '$ad_id' ORDER BY id ASC;";
+		$query = "SELECT * FROM comments WHERE ad_id = '$ad_id' ORDER BY published DESC;";
 		$res = $db->query($query);
 		$comments = array();
 
@@ -42,6 +42,18 @@ class Comment {
 
 		return $comments;
 	}
+    public static function returnLastFive() {
+        $db = Db::getInstance();
+        $query = "SELECT * FROM comments ORDER BY published DESC LIMIT 5;";
+        $res = $db->query($query);
+        $comments = array();
+
+        while ($comment = $res->fetch_object()) {
+            $comments[] = new Comment($comment->id, $comment->ad_id, $comment->user_id, $comment->text, $comment->published);
+        }
+
+        return $comments;
+    }
 	public static function add($ad_id, $text) {
 		if (!isset($_SESSION["USER_ID"])) {
 			return null;

@@ -44,11 +44,10 @@ if(!isset($request[0]) || $request[0] != "comments"){
 switch($method){
     case "GET":
         if(!isset($request[1])) {
-			echo json_encode((object)["status"=>"500", "message"=>"Invalid parameters"]);
-			die();
-		}
-
-		$comments_controller->index($request[1]);
+            $comments_controller->returnLastFive();
+		} else {
+            $comments_controller->index($request[1]);
+        }
         break;
     case "POST":
 		if(!isset($_SESSION["USER_ID"])) {

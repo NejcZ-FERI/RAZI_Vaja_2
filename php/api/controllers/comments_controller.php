@@ -5,6 +5,10 @@ class comments_controller {
         $comments = Comment::getAll($ad_id);
         echo json_encode($comments);
     }
+    public function returnLastFive() {
+        $comments = Comment::returnLastFive();
+        echo json_encode($comments);
+    }
     public function add() {
 		$comment = Comment::add($_POST["ad_id"], $_POST["text"]);
 		echo json_encode($comment);

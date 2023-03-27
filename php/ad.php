@@ -45,6 +45,16 @@ if (!isset($_COOKIE["VIEWS"])) {
             await loadComments();
             $("#create_comment_btn").click(createComment);
             $(".delete_comment_btn").click(deleteClickHandler);
+
+            const observer = new MutationObserver((mutationsList, observer) => {
+                if ($("#comments_section").is(":empty")) {
+                    $("#comment_title").hide();
+                } else {
+                    $("#comment_title").show();
+                }
+            });
+
+            observer.observe(document.getElementById('comments_section'), {attributes: false, childList: true, subtree: true});
         });
 
         async function loadComments() {
@@ -91,7 +101,7 @@ if (!isset($_COOKIE["VIEWS"])) {
 
                 commentsHtml += "</div></div>";
 
-                $("#comments_section").append(commentsHtml);
+                $("#comments_section").prepend(commentsHtml);
             });
         }
 
@@ -132,9 +142,8 @@ if (!isset($_COOKIE["VIEWS"])) {
             <br/> <br/> <label for="create_comment_text">Text</label><textarea id="create_comment_text" name="create_comment_text" rows="10" cols="50"></textarea>
             <button id="create_comment_btn" class="btn btn-primary">Dodaj</button>
 		<?php } ?>
-        <br/> <br/> <div id="comments_section">
-            <h5>Komentarji:</h5>
-        </div>
+        <br/> <br/> <h5 id="comment_title">Komentarji:</h5>
+        <div id="comments_section"></div>
 	</div>
 <?php
 include_once('footer.php');
